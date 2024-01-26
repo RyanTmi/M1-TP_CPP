@@ -5,6 +5,12 @@
 #include <numeric>
 #include <map>
 
+std::ostream& operator<<(std::ostream& os, const Fiche& f)
+{
+    os << f.Name << " " << f.City << " " << f.Age << " " << f.Time;
+    return os;
+}
+
 bool FetchDatas(std::vector<Fiche>& datas)
 {
     std::ifstream dataFile("smalldata.txt");
@@ -188,10 +194,7 @@ void TimeSortDatas(const std::vector<Fiche>& datas)
     constexpr int dataLimit = 100;
     std::ofstream sortDatasFile("data_tri.txt");
     for (int i = dataLimit - 1; i >= 0; --i) {
-        sortDatasFile << sortedDatas[i].Name << "\t"
-                      << sortedDatas[i].City << "\t"
-                      << sortedDatas[i].Age << "\t"
-                      << sortedDatas[i].Time << std::endl;
+        sortDatasFile << sortedDatas[i] << std::endl;
     }
 }
 
@@ -213,10 +216,7 @@ void SortDatas(const std::vector<Fiche>& datas)
 
     std::ofstream sortDatasFile("ordre.dat");
     for (const auto& f : sortedDatas) {
-        sortDatasFile << f.Name << "\t"
-                      << f.City << "\t"
-                      << f.Age << "\t"
-                      << f.Time << std::endl;
+            sortDatasFile << f << std::endl;
     }
 }
 
@@ -235,3 +235,33 @@ void AgesHistogramme(const std::vector<Fiche>& datas)
     })) << std::endl;
 }
 
+void SmallestStep(const std::vector<Fiche>& datas)
+{
+    std::vector<double> times(datas.size());
+    std::transform(datas.begin(), datas.end(), std::back_inserter(times), [](const Fiche& f) { return f.Time; });
+
+    std::sort(times.begin(), times.end());
+    std::adjacent_difference(times.begin(), times.end(), times.begin());
+
+    double minStep = *std::min_element(times.begin(), times.end());
+    std::cout << "Min : " << minStep << std::endl;
+}
+
+void YoungFilter(const std::vector<Fiche>& datas)
+{
+    std::vector<Fiche> jeunes;
+    std::vector<Fiche> moinsJeunes;
+
+    std::partition_copy(
+        datas.begin(), datas.end(),
+        std::back_inserter(jeunes), std::back_inserter(moinsJeunes),
+        [](const Fiche& f) { return f.Age < 40; }
+    );
+
+    // for (const auto& f : jeunes) {
+    //     std::cout << f << std::endl;
+    // }
+    // for (const auto& f : moinsJeunes) {
+    //     std::cout << f << std::endl;
+    // }
+}

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <string>
 #include <fstream>
+#include <string>
+#include <vector>
 #include <set>
 
 struct Fiche
@@ -10,6 +11,8 @@ struct Fiche
     std::string City;
     int Age;
     double Time;
+
+    friend std::ostream& operator<<(std::ostream& os, const Fiche& f);
 };
 
 struct AnalysisResult
@@ -58,3 +61,6 @@ void TimeSortDatas(const std::vector<Fiche>& datas);
 
 void SortDatas(const std::vector<Fiche>& datas);
 void AgesHistogramme(const std::vector<Fiche>& datas);
+
+void SmallestStep(const std::vector<Fiche>& datas);
+void YoungFilter(const std::vector<Fiche>& datas);

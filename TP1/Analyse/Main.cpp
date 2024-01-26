@@ -20,5 +20,8 @@ int main()
     SortDatas(datas);
     AgesHistogramme(datas);
 
+    SmallestStep(datas);
+    YoungFilter(datas);
+
     return 0;
 }
