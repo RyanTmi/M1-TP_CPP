@@ -26,6 +26,6 @@ private:
     double m_LowerBound;
     double m_UpperBound;
     double m_Delta;
-    std::vector<double> m_Boxes;
+    std::vector<int> m_Boxes;
     std::size_t m_OutCount;
 };
