@@ -7,7 +7,7 @@ bool Histogram::operator+=(double x)
         m_OutCount++;
         return false;
     }
-    m_Boxes[std::floor((x - m_LowerBound) * m_Delta)]++;
+    m_Boxes[std::floor((x - m_LowerBound) / m_Delta)]++;
     return true;
 }
 

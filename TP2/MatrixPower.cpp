@@ -1,11 +1,11 @@
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-
 #include <chrono>
 #include <fstream>
 #include <functional>
 #include <iostream>
 #include <sstream>
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
 
 using MatrixDouble       = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>;
 using SparseMatrixDouble = Eigen::SparseMatrix<double>;
