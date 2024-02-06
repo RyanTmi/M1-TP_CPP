@@ -2,16 +2,13 @@
 
 bool Histogram::operator+=(double x)
 {
-    for (std::size_t k = 0; k < m_Boxes.size(); ++k)
+    if (x < m_LowerBound || x > m_UpperBound)
     {
-        if (m_LowerBound + k * m_Delta <= x && x < m_LowerBound + (k + 1) * m_Delta)
-        {
-            m_Boxes[k]++;
-            return true;
-        }
+        m_OutCount++;
+        return false;
     }
-    m_OutCount++;
-    return false;
+    m_Boxes[std::floor((x - m_LowerBound) * m_Delta)]++;
+    return true;
 }
 
 void Histogram::Reset()

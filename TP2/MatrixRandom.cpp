@@ -54,12 +54,10 @@ MatrixDouble GenerateGOEMatrix(std::mt19937_64& g, std::size_t n)
 
     MatrixDouble goe(n, n);
     for (std::size_t i = 0; i < n; ++i) {
-        for (std::size_t j = 0; j < n; ++j) {
-            if (i == j) {
-                goe(i, j) = n1(g);
-            } else {
-                goe(i, j) = n2(g);
-            }
+        goe(i, i) = n1(g);
+        for (std::size_t j = i + 1; j < n; ++j) {
+            goe(i, j) = n2(g);
+            goe(j, i) = goe(i, j);
         }
     }
 
