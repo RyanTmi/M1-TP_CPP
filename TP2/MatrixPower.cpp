@@ -30,10 +30,13 @@ int main()
     SparseMatrixDouble sB(B.rows(), B.cols());
 
     std::ifstream matrixDatas("matrice.dat");
-    for (int i = 0; i < 30; ++i) {
-        for (int j = 0; j < 30; ++j) {
+    for (int i = 0; i < 30; ++i)
+    {
+        for (int j = 0; j < 30; ++j)
+        {
             matrixDatas >> B(i, j);
-            if (B(i, j) != 0) {
+            if (B(i, j) != 0)
+            {
                 sB.coeffRef(i, j) = B(i, j);
             }
         }
@@ -69,7 +72,8 @@ int main()
 
 MatrixDouble SlowPower(const MatrixDouble& m, std::size_t n)
 {
-    switch (n) {
+    switch (n)
+    {
         case 0:
             return MatrixDouble::Identity(m.rows(), m.cols());
         case 1:
@@ -81,7 +85,8 @@ MatrixDouble SlowPower(const MatrixDouble& m, std::size_t n)
 
 MatrixDouble FastPower(const MatrixDouble& m, std::size_t n)
 {
-    switch (n) {
+    switch (n)
+    {
         case 0:
             return MatrixDouble::Identity(m.rows(), m.cols());
         case 1:
@@ -90,7 +95,8 @@ MatrixDouble FastPower(const MatrixDouble& m, std::size_t n)
             break;
     }
     MatrixDouble halfPow = FastPower(m, n / 2);
-    switch (n % 2) {
+    switch (n % 2)
+    {
         case 0:
             return halfPow * halfPow;
         default:
@@ -100,7 +106,8 @@ MatrixDouble FastPower(const MatrixDouble& m, std::size_t n)
 
 SparseMatrixDouble SparseFastPower(const SparseMatrixDouble& m, std::size_t n)
 {
-    switch (n) {
+    switch (n)
+    {
         case 0: {
             SparseMatrixDouble id;
             id.setIdentity();
@@ -112,7 +119,8 @@ SparseMatrixDouble SparseFastPower(const SparseMatrixDouble& m, std::size_t n)
             break;
     }
     SparseMatrixDouble halfPow = SparseFastPower(m, n / 2);
-    switch (n % 2) {
+    switch (n % 2)
+    {
         case 0:
             return halfPow * halfPow;
         default:
