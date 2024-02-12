@@ -24,9 +24,24 @@ Si vous n’êtes pas familier avec Git, vous pouvez télécharger le dépôt so
 
 ### TP1 : Premiers programmes, entrées/sorties, statistiques
 
+```sh
+cd TP1/FirstPrograms
+make
+
+cd TP1/Analyses
+make
+
+make clean
+```
 
 ### TP2 : Un exemple de bibliothèque d’algèbre linéaire : Eigen
 
+```sh
+cd TP2
+make MatrixPower
+make MatrixRandom
+make clean
+```
 
 ### TP3 : Classes et permutations
 
