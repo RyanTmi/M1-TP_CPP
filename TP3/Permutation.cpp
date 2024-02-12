@@ -213,9 +213,9 @@ std::list<Cycle> SparsePermutation::Cycles() const
 {
     std::list<Cycle> cycles;
     std::set<std::size_t> s;
-    for (std::size_t i = 0; i < m_Size; ++i)
+    for (auto kv : m_NonTrivialImages)
     {
-        s.emplace_hint(s.end(), i);
+        s.emplace_hint(s.end(), kv.first);
     }
 
     while (!s.empty())
