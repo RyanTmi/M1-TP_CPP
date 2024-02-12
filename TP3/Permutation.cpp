@@ -1,6 +1,7 @@
 #include "Permutation.hpp"
 
 #include <algorithm>
+#include <iterator>
 #include <set>
 
 static std::int64_t Pcd(std::int64_t a, std::int64_t b);

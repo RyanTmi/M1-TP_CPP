@@ -1,5 +1,7 @@
 #include "Histogram.hpp"
 
+#include <cmath>
+
 bool Histogram::operator+=(double x)
 {
     if (x < m_LowerBound || x > m_UpperBound)
