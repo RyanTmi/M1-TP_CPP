@@ -15,9 +15,6 @@ int main()
         fichier_sparse_u >> u_sp;
     }
 
-    std::cout << u << "\n";
-    std::cout << u_sp << "\n";
-
     {
         std::cout << "----- Avec Permutation: \n";
         auto t1 = std::chrono::system_clock::now();
