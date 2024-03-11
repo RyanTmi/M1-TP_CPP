@@ -10,6 +10,12 @@ Analysis
 MatrixPower
 MatrixRandom
 
-# TP2
+# TP3
 TestPermutation
 TestSparse
+
+# TP4
+TestRandomWalk
+ProfileContainers
+chocolatine.cpp
+Analysis
