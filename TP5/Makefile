@@ -1,10 +1,10 @@
 CXX      := g++
 CFLAGS   := -Wall -Wextra -pedantic -std=c++11
 
-all: TestRandomWalk
+all: MonteCarlo
 
-TestRandomWalk: TestRandomWalk.cpp
+MonteCarlo: Simulation.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
 clean:
-	$(RM) TestRandomWalk
+	$(RM) MonteCarlo

@@ -1,10 +1,10 @@
 CXX      := g++
 CFLAGS   := -Wall -Wextra -pedantic -std=c++11
 
-all: TestRandomWalk
+all: Analysis
 
-TestRandomWalk: TestRandomWalk.cpp
+Analysis: TextAnalysis.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
 clean:
-	$(RM) TestRandomWalk
+	$(RM) Analysis
