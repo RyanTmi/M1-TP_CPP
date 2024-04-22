@@ -1,10 +1,10 @@
 CXX      := g++
 CFLAGS   := -Wall -Wextra -pedantic -O2 -std=c++11
 
-all: MonteCarlo
+all: polynome
 
-MonteCarlo: Simulation.cpp
+polynome: main.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
 clean:
-	$(RM) MonteCarlo
+	$(RM) polynome

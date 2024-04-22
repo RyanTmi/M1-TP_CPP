@@ -1,5 +1,6 @@
 .DS_Store/
 .vscode/
+.idea/
 
 # TP1
 FirstProgram
@@ -22,3 +23,6 @@ Analysis
 
 # TP5
 MonteCarlo
+
+# TP6
+polynome
