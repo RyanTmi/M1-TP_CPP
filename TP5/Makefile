@@ -1,10 +1,10 @@
 CXX      := g++
-CFLAGS   := -Wall -Wextra -pedantic -O2 -std=c++11
+CFLAGS   := -Wall -Wextra -Wpedantic -O2 -std=c++11
 
-all: MonteCarlo
+all: test_monte_carlo
 
-MonteCarlo: Simulation.cpp
+test_monte_carlo: simulation.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
 clean:
-	$(RM) MonteCarlo
+	$(RM) test_monte_carlo
