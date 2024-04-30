@@ -8,12 +8,12 @@ SecondProgram
 Analysis
 
 # TP2
-MatrixPower
-MatrixRandom
+test_matrix_power
+test_matrix_random
 
 # TP3
-TestPermutation
-TestSparse
+test_permutation
+test_sparse
 
 # TP4
 TestRandomWalk
@@ -22,7 +22,7 @@ chocolatine.cpp
 Analysis
 
 # TP5
-MonteCarlo
+test_monte_carlo
 
 # TP6
-polynome
+test_polynome

@@ -54,7 +54,7 @@ BinPackArguments: true
 BinPackParameters: true
 BitFieldColonSpacing: Both
 BraceWrapping:
-  AfterCaseLabel: false
+  AfterCaseLabel: true
   AfterClass: true
   AfterControlStatement: Always
   AfterEnum: true
@@ -111,7 +111,7 @@ IncludeCategories:
 IncludeIsMainRegex: (Test)?$
 IncludeIsMainSourceRegex: ""
 IndentAccessModifiers: false
-IndentCaseBlocks: true
+IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
 IndentGotoLabels: false

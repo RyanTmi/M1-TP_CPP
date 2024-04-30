@@ -1,29 +1,29 @@
-#include "Histogram.hpp"
+#include "histogram.hpp"
 
 #include <cmath>
 
-bool Histogram::operator+=(double x)
+bool histogram::operator+=(double x)
 {
-    if (x < m_LowerBound || x > m_UpperBound)
+    if (x < m_lower_bound || x > m_upper_bound)
     {
-        m_OutCount++;
+        m_out_count++;
         return false;
     }
-    m_Boxes[std::floor((x - m_LowerBound) / m_Delta)]++;
+    m_boxes[std::floor((x - m_lower_bound) / m_delta)]++;
     return true;
 }
 
-void Histogram::Reset()
+void histogram::Reset()
 {
-    m_OutCount = 0;
-    m_Boxes.clear();
+    m_out_count = 0;
+    m_boxes.clear();
 }
 
-std::ostream& operator<<(std::ostream& out, const Histogram& h)
+std::ostream& operator<<(std::ostream& out, const histogram& h)
 {
-    for (std::size_t k = 0; k < h.m_Boxes.size(); ++k)
+    for (std::size_t k = 0; k < h.m_boxes.size(); ++k)
     {
-        out << h.m_LowerBound + k * h.m_Delta + h.m_Delta / 2.0 << "\t" << h.m_Boxes[k] << "\n";
+        out << h.m_lower_bound + k * h.m_delta + h.m_delta / 2.0 << "\t" << h.m_boxes[k] << "\n";
     }
     return out;
 }
