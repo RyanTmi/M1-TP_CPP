@@ -1,13 +1,13 @@
 CXX      := g++
-CFLAGS   := -Wall -Wextra -pedantic -std=c++11
+CFLAGS   := -Wall -Wextra -Wpedantic -O2 -std=c++11
 
-all: TestPermutation TestSparse
+all: test_permutation test_sparse
 
-TestPermutation: TestPermutation.cpp Permutation.cpp
+test_permutation: test_permutation.cpp permutation.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
-TestSparse: TestSparse.cpp Permutation.cpp
+test_sparse: test_sparse.cpp permutation.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
 
 clean:
-	$(RM) TestPermutation TestSparse
+	$(RM) test_permutation test_sparse

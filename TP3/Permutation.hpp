@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PERMUTATION_HPP
+#define PERMUTATION_HPP
 
 #include <iostream>
 #include <list>
@@ -6,88 +7,95 @@
 #include <random>
 #include <vector>
 
-class Cycle;
+class cycle;
 
-class ImmutablePermutation
+class immutable_permutation
 {
 public:
-    virtual ~ImmutablePermutation() = default;
+    virtual ~immutable_permutation() = default;
+
 public:
-    virtual size_t Size() const = 0;
-    virtual size_t operator[](size_t i) const = 0;
-    virtual size_t Order() const = 0;
-    virtual std::list<Cycle> Cycles() const = 0;
+    virtual std::size_t size() const = 0;
+    virtual std::size_t operator[](std::size_t i) const = 0;
+    virtual std::size_t order() const = 0;
+    virtual std::list<cycle> cycles() const = 0;
 };
 
-class Permutation : public ImmutablePermutation
+class permutation : public immutable_permutation
 {
 public:
     template <typename RNG>
-    Permutation(size_t size, RNG& g);
-    Permutation(size_t size = 1);
-    Permutation(const std::vector<size_t>& images);
+    permutation(std::size_t size, RNG& g);
+    permutation(std::size_t size = 1);
+    permutation(const std::vector<std::size_t>& images);
 
-    size_t Size() const override;
-    size_t operator[](size_t i) const override;
-    size_t Order() const override;
-    std::list<Cycle> Cycles() const override;
+    std::size_t size() const override;
+    std::size_t operator[](std::size_t i) const override;
+    std::size_t order() const override;
+    std::list<cycle> cycles() const override;
 
-    Permutation Inverse() const;
-    bool IsDerangement() const;
-    std::list<size_t> FixedPoints() const;
+    permutation inverse() const;
+    bool is_derangement() const;
+    std::list<std::size_t> fixed_points() const;
+
 public:
-    friend Permutation operator*(const Permutation& a, const Permutation& b);
-    friend std::ostream& operator<<(std::ostream& out, const Permutation& p);
-    friend std::istream& operator>>(std::istream& in, Permutation& p);
+    friend permutation operator*(const permutation& a, const permutation& b);
+    friend std::ostream& operator<<(std::ostream& out, const permutation& p);
+    friend std::istream& operator>>(std::istream& in, permutation& p);
+
 private:
-    size_t m_Size;
-    std::vector<size_t> m_Images;
+    std::size_t m_size;
+    std::vector<std::size_t> m_images;
 };
 
 template <typename RNG>
-Permutation::Permutation(std::size_t size, RNG& g)
-    : Permutation(size)
+permutation::permutation(std::size_t size, RNG& g)
+    : permutation(size)
 {
-    for (size_t i = 0; i < size - 1; ++i)
+    for (std::size_t i = 0; i < size - 1; ++i)
     {
-        std::uniform_int_distribution<size_t> u(i, size - 1);
-        std::swap(m_Images[i], m_Images[u(g)]);
+        std::uniform_int_distribution<std::size_t> u(i, size - 1);
+        std::swap(m_images[i], m_images[u(g)]);
     }
 }
 
-class SparsePermutation : public ImmutablePermutation
+class sparse_permutation : public immutable_permutation
 {
 public:
-    size_t Size() const override;
-    size_t operator[](size_t i) const override;
-    size_t Order() const override;
-    std::list<Cycle> Cycles() const override;
-public:
-    friend SparsePermutation operator*(const SparsePermutation& a, const SparsePermutation& b);
-    friend std::ostream& operator<<(std::ostream& out, const SparsePermutation& p);
-    friend std::istream& operator>>(std::istream& in, SparsePermutation& p);
+    std::size_t size() const override;
+    std::size_t operator[](std::size_t i) const override;
+    std::size_t order() const override;
+    std::list<cycle> cycles() const override;
+
+    friend sparse_permutation operator*(const sparse_permutation& a, const sparse_permutation& b);
+    friend std::ostream& operator<<(std::ostream& out, const sparse_permutation& p);
+    friend std::istream& operator>>(std::istream& in, sparse_permutation& p);
+
 private:
-    size_t m_Size;
-    std::map<size_t, size_t> m_NonTrivialImages;
+    std::size_t m_size;
+    std::map<std::size_t, std::size_t> m_non_trivial_images;
 };
 
-class Cycle : public ImmutablePermutation
+class cycle : public immutable_permutation
 {
 public:
-    size_t Size() const override;
-    size_t operator[](size_t i) const override;
-    size_t Order() const override;
-    std::list<Cycle> Cycles() const override;
+    std::size_t size() const override;
+    std::size_t operator[](std::size_t i) const override;
+    std::size_t order() const override;
+    std::list<cycle> cycles() const override;
 
-    Cycle Inverse() const;
-    bool operator<(const Cycle& rhs) const;
-public:
-    friend Permutation;
-    friend SparsePermutation;
-    friend std::ostream& operator<<(std::ostream& out, const Cycle& c);
+    cycle inverse() const;
+    bool operator<(const cycle& rhs) const;
+
+    friend permutation;
+    friend sparse_permutation;
+    friend std::ostream& operator<<(std::ostream& out, const cycle& c);
+
 private:
-    void AddLastPoint(size_t element);
-    std::vector<size_t>::const_iterator Find(size_t i) const;
-private:
-    std::vector<size_t> m_Elements;
+    void add_last_point(std::size_t element);
+    std::vector<std::size_t>::const_iterator find(std::size_t i) const;
+
+    std::vector<std::size_t> m_elements;
 };
+
+#endif /* PERMUTATION_HPP */
