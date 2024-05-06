@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <complex>
+#include <cmath>
+#include <functional>
 #include <iostream>
 #include <iterator>
 #include <list>
@@ -54,6 +56,12 @@ bool is_invertible(T x)
         return x == 1 || x == -1;
     }
     return !is_zero(x);
+}
+
+template <typename U>
+U identity(const U&)
+{
+    return U(1);
 }
 
 // std::complex type traits
@@ -116,13 +124,17 @@ public:
         : m_degree(coefficients.size() - 1), m_coefficients(coefficients)
     {}
 
+    basic_polynome(std::vector<T>&& coefficients)
+        : m_degree(coefficients.size() - 1), m_coefficients(std::move(coefficients))
+    {}
+
 public:
     std::int64_t degree() const { return m_degree; }
 
     T operator[](std::int64_t i) const { return (i >= 0 && i <= m_degree) ? m_coefficients[i] : 0; }
 
-    template <typename U>
-    U operator()(const U& x) const;
+    template <typename U, typename I = decltype(identity<U>)>
+    U operator()(const U& x, const I& e = identity<U>) const;
 
     friend std::ostream& operator<< <>(std::ostream& out, const basic_polynome& p);
     friend basic_polynome operator+ <>(const basic_polynome& p1, const basic_polynome& p2);
@@ -151,15 +163,18 @@ std::ostream& operator<<(std::ostream& out, const basic_polynome<T>& p)
     {
         return out << 0;
     }
-    for (std::int64_t i = p.m_degree; i >= 0; --i)
+    for (std::int64_t i = p.m_degree; i > 0; --i)
     {
-        if (i != p.m_degree && !is_zero(p.m_coefficients[i]))
+        if (!is_zero(p[i]))
+        {
+            p.print_monome(out, p[i], i);
+        }
+        if (!is_zero(p[i - 1]))
         {
             out << " + ";
         }
-        p.print_monome(out, p.m_coefficients[i], i);
     }
-    return out;
+    return is_zero(p[0]) ? out : out << p[0];
 }
 
 template <typename T>
@@ -170,27 +185,24 @@ void basic_polynome<T>::print_monome(std::ostream& out, const T& a, std::size_t 
     {
         return;
     }
-    out << a;
-    if (n == 0)
+    out << a << '*';
+    if (n == 1)
     {
-        return;
-    }
-    else if (n == 1)
-    {
-        out << '*' << x;
+        out << x;
     }
     else
     {
-        out << '*' << x << '^' << n;
+        out << x << '^' << n;
     }
 }
 
 template <typename T>
 basic_polynome<T> basic_polynome<T>::extend(std::int64_t m) const
 {
-    std::vector<T> coefficients = m_coefficients;
-    coefficients.resize(std::max(m_degree, m) + 1);
-    return basic_polynome<T>(coefficients);
+    std::vector<T> coefficients;
+    coefficients.reserve(std::max(m_degree, m) + 1);
+    std::copy(m_coefficients.cbegin(), m_coefficients.cend(), coefficients.begin());
+    return basic_polynome<T>(std::move(coefficients));
 }
 
 template <typename T>
@@ -204,12 +216,14 @@ void basic_polynome<T>::adjust()
 }
 
 template <typename T>
-template <typename U>
-U basic_polynome<T>::operator()(const U& x) const
+template <typename U, typename I>
+U basic_polynome<T>::operator()(const U& x, const I& e) const
 {
-    return (m_degree >= 0) ? std::accumulate(m_coefficients.crbegin(), m_coefficients.crend(), 0,
-                                             [&x](const U& a, T b) { return a * x + b; })
-                           : 0;
+    U one = e(x);
+    U zero = T(0) * one;
+    return (m_degree >= 0) ? std::accumulate(m_coefficients.crbegin(), m_coefficients.crend(), zero,
+                                             [&](const U& a, T b) { return a * x + b * one; })
+                           : zero;
 }
 
 template <typename T>
@@ -250,7 +264,7 @@ basic_polynome<T> operator-(const basic_polynome<T>& p1, const basic_polynome<T>
 template <typename T>
 basic_polynome<T> operator*(const basic_polynome<T>& p1, const basic_polynome<T>& p2)
 {
-    std::vector<T> coefficients(p1.m_degree + p2.m_degree);
+    std::vector<T> coefficients(p1.m_degree + p2.m_degree + 1);
     for (std::int64_t i = 0; i <= p2.m_degree; ++i)
     {
         for (std::int64_t j = 0; j <= p1.m_degree; ++j)
@@ -277,21 +291,17 @@ template <typename T>
 std::pair<basic_polynome<T>, basic_polynome<T>> euclidean_division(const basic_polynome<T>& p1,
                                                                    const basic_polynome<T>& p2)
 {
-    if (p1.m_degree < p2.m_degree)
-    {
-        return std::make_pair(basic_polynome<T>(), p1);
-    }
-
     basic_polynome<T> r(p1);
-    basic_polynome<T> q({0});
+    basic_polynome<T> q;
+
     while (r.m_degree >= p2.m_degree)
     {
-        std::int64_t m = r.m_degree - p2.m_degree;
         if (!is_invertible(p2[p2.m_degree]))
         {
             std::cerr << "Error: " << p2[p2.m_degree] << "is not invertible!\n";
             return std::make_pair(basic_polynome<T>(), p1);
         }
+        std::int64_t m = r.m_degree - p2.m_degree;
         basic_polynome<T> qm(r[r.m_degree] / p2[p2.m_degree], m);
         r = r - p2 * qm;
         q = q + qm;
@@ -302,6 +312,8 @@ std::pair<basic_polynome<T>, basic_polynome<T>> euclidean_division(const basic_p
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////         MONOME & POLYNOME         ////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+// TODO: Implement monone
 
 template <typename T>
 class monome;
@@ -399,12 +411,6 @@ polynome<T> operator+(const polynome<T>& p1, const polynome<T>& p2)
     (void) p1;
     (void) p2;
     return {};
-    polynome<T> p;
-
-    // for (std::int64_t i =)
-    // {
-    //     return p;
-    // }
 }
 
 template <typename T>

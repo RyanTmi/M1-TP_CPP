@@ -1,9 +1,19 @@
+#include "polynome.hpp"
+
 #include <cmath>
 #include <complex>
 #include <iostream>
 #include <vector>
 
-#include "polynome.hpp"
+#include <Eigen/Dense>
+
+using matrix = Eigen::Matrix<std::complex<double>, Eigen::Dynamic, Eigen::Dynamic>;
+
+template <>
+matrix identity<matrix>(const matrix& m)
+{
+    return matrix::Identity(m.rows(), m.cols());
+}
 
 int main()
 {
@@ -32,11 +42,19 @@ int main()
     basic_polynome<int> sum = p1 + p2;
     basic_polynome<int> diff = p1 - p2;
     basic_polynome<int> prod = p1 * p2;
+
     std::cout << "Somme : " << sum << '\n';
     std::cout << "Difference : " << diff << '\n';
     std::cout << "Produit : " << prod << '\n';
     std::cout << "Division: " << p1 / p2 << '\n';
     std::cout << "Reste: " << p1 % p2 << '\n';
+
+    matrix m {
+        { 4.0,   {1.0, 1.0}},
+        {-2.0, std::sqrt(3)}
+    };
+    std::cout << "m =\n" << m << '\n';
+    std::cout << "p1(m) =\n" << p1(m) << '\n';
 
     return 0;
 }
