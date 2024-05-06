@@ -7,3 +7,11 @@ test_melange
 
 # Groupe 3
 test_urne
+
+# Groupe 1 2024
+test_melange_gaussien
+
+# Groupe 3 2024
+test_combinaison
+test_fonction
+test_vecteur
