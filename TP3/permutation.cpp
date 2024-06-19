@@ -97,7 +97,7 @@ permutation operator*(const permutation& a, const permutation& b)
     }
     for (std::size_t i = minmax.first.m_size; i < minmax.second.m_size; ++i)
     {
-        images[i] = i;
+        images[i] = b[i];
     }
 
     return permutation(images);
